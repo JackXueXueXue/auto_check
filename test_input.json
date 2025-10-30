@@ -1,0 +1,24 @@
+
+    {
+        "Outputs": [
+            {
+                "Name": "Result",
+                "Type": "object-array",
+                "Value": [
+                    {
+                        "BlockId": "0195c72a-b36e-59de-b1f1-8c325a504c91",
+                        "Text": "# FlashGet Kids Connector\n\nFlashGet Kids Connector 如果包括这个三个单词(不区分大小写的)，请保留原文，不翻译。\n",
+                        "Score": 0.8292092,
+                        "Token": 43
+                    },
+                    {
+                        "BlockId": "0195c72a-b36e-59de-b1f1-8c325a504c9a",
+                        "Text": "# FlashGet Cast\n\nFlashGet Cast 如果包括这两个单词(不区分大小写的)，请保留原文，不翻译。\n",
+                        "Score": 0.7955847,
+                        "Token": 40
+                    }
+                ]
+            }
+        ]
+    }
+        

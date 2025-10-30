@@ -1,0 +1,10 @@
+{
+  "access_token": "你的GitLab_Token",
+  "project_id": 123,
+  "platform": "gitlab",
+  "base_url": "http://git.server.tongbu.com/",
+  "per_page": 10,
+  "ref_name": "master",
+  "include_diff": true
+}
+

@@ -1,0 +1,55 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "简单运行 - 获取提交",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/简单运行.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "获取 dev 分支 20 条",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/fetch_tongbu_commits.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--branch", "dev",
+                "--per-page", "20"
+            ]
+        },
+        {
+            "name": "获取 master 分支 10 条",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/fetch_tongbu_commits.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--branch", "master",
+                "--per-page", "10"
+            ]
+        },
+        {
+            "name": "获取并保存到文件",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/fetch_tongbu_commits.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--branch", "dev",
+                "--per-page", "20",
+                "--output", "commits.json"
+            ]
+        },
+        {
+            "name": "运行测试",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/test_tongbu.py",
+            "console": "integratedTerminal"
+        }
+    ]
+}
+

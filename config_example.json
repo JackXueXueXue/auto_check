@@ -1,0 +1,10 @@
+{
+  "access_token": "JyxNC-T2QxK-wDursXPs",
+  "project_id": "508",
+  "project_name": "Tongbu.Tui.Nms.Inner",
+  "base_url": "http://git.server.tongbu.com/api/v4",
+  "platform": "gitlab",
+  "default_branch": "dev",
+  "default_per_page": 20
+}
+
