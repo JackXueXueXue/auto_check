@@ -303,16 +303,19 @@ def extract_function_context(code_lines, line_range, language='csharp'):
                 if in_brace and brace_count == 0 and i >= end_line:
                     break
             
-            # 保留换行符
-            context['function_code'] = ''.join(func_lines)
+            # 重新用换行符连接，保留格式
+            context['function_code'] = '\n'.join(func_lines) if func_lines else ''
             context['class_name'] = class_name
-            context['function_start'] = function_start  # 保存函数开始的索引
+            context['function_start'] = function_start  # 保存函数开始的索引（0-based）
+            context['function_end'] = function_start + len(func_lines)  # 保存函数结束的索引
         
         # 如果没找到完整的函数，至少提取改动周围的代码（前后各30行）
         if not context['function_code']:
             context_start = max(0, start_line - 30)
             context_end = min(len(code_lines), end_line + 30)
-            context['function_code'] = ''.join(code_lines[context_start:context_end])
+            context['function_code'] = '\n'.join(code_lines[context_start:context_end])
+            context['function_start'] = context_start
+            context['function_end'] = context_end
     
     return context
 
@@ -406,6 +409,8 @@ def format_for_ai_review(commit, api_base_url=None, project_id=None, access_toke
                 changed_ranges = extract_changed_ranges_from_diff(diff_content)
                 
                 if new_file_content and changed_ranges:
+                    # 保留原始文件内容用于完整显示
+                    original_file_content = new_file_content
                     new_code_lines = new_file_content.split('\n')
                     
                     # 为每个改动范围提取上下文
@@ -440,8 +445,15 @@ def format_for_ai_review(commit, api_base_url=None, project_id=None, access_toke
                             
                             output_lines.append("")
                             
-                            # 格式化函数代码
+                            # 格式化函数代码 - 确保有换行符
                             func_code = context['function_code']
+                            # 如果代码中没有换行符，尝试从lines重新构建
+                            if '\n' not in func_code and function_start_line >= 0:
+                                # 从原始文件内容中提取对应的行范围
+                                func_start = function_start_line
+                                func_end_line = context.get('function_end', len(new_code_lines))
+                                if func_end_line > func_start:
+                                    func_code = '\n'.join(new_code_lines[func_start:func_end_line])
                             
                             # 检查代码长度，如果太长则智能截取
                             func_lines_list = func_code.split('\n') if '\n' in func_code else [func_code]
@@ -937,7 +949,8 @@ if __name__ == '__main__':
                         print(f"\n{'='*80}")
                         print(f"【AI审核格式 - 提交 #{idx}】")
                         print(f"{'='*80}\n")
-                        print(formatted)
+                        # 避免Windows控制台编码问题，只输出提示信息
+                        print("[内容已生成，将保存到文件，请查看输出文件]")
             
             # 保存AI审核格式到文件
             if args.ai_review or args.ai_review_output:
@@ -965,7 +978,7 @@ if __name__ == '__main__':
                 all_content = separator.join(ai_review_contents)
                 with open(output_file, 'w', encoding='utf-8') as f:
                     f.write(all_content)
-                print(f"\n✓ AI审核格式已保存到: {output_file}")
+                print(f"\n[成功] AI审核格式已保存到: {output_file}")
     else:
         print(f"\n错误: {result['error']}")
 
